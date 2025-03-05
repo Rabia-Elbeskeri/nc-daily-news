@@ -14,7 +14,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
             return db.query(`CREATE TABLE topics
                 (
                     slug        VARCHAR(50) PRIMARY KEY,
-                    description VARCHAR NOT NULL,
+                    description VARCHAR(1000) NOT NULL,
                     img_url VARCHAR(1000) NOT NULL
                              );`);
         })
@@ -23,7 +23,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
                 CREATE TABLE users
                 (
                     username   VARCHAR(50) PRIMARY KEY,
-                    name VARCHAR NOT NULL,
+                    name VARCHAR(100) NOT NULL,
                     avatar_url VARCHAR(1000) NOT NULL
                 );`);
         })
@@ -32,7 +32,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
                 CREATE TABLE articles
                 (
                     article_id      SERIAL PRIMARY KEY,
-                    title VARCHAR NOT NULL,
+                    title VARCHAR(255) NOT NULL,
                     topic    VARCHAR(50) REFERENCES topics (slug) ON DELETE CASCADE,
                     author      VARCHAR(50) REFERENCES users (username) ON DELETE CASCADE,
                     body            TEXT NOT NULL,
