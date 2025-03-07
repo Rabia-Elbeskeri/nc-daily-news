@@ -73,21 +73,35 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
             const articleQuery = format(`INSERT INTO articles (title, topic, author, body, created_at, votes, article_img_url) VALUES %L RETURNING *;`, formattedArticlesValues);
             return db.query(articleQuery);
         })
-        .then(() => {
-            const formattedCommentData = commentData.map(convertTimestampToDate);
-
-            const formattedCommentValues = formattedCommentData.map(({ article_id, body, votes, author, created_at }) => {
-                return [article_id, body, votes, author, created_at];
+               .then(({rows: insertedArticles}) => {
+            const articleTitleToIdMap = new Map();
+            insertedArticles.forEach(({title, article_id}) => {
+                articleTitleToIdMap.set(title, article_id);
             });
 
+            const formattedCommentData = commentData.map(convertTimestampToDate);
+            const formattedCommentValues = formattedCommentData
+                .map(({ article_title, body, votes, author, created_at }) => {
+                    const article_id = articleTitleToIdMap.get(article_title);
+                    return article_id ? [article_id, body, votes, author, created_at] : null;
+                })
+                .filter(Boolean);
 
+            if (formattedCommentValues.length === 0) {
+                return Promise.resolve();
+            }
 
+            const commentQuery = format(
+                `INSERT INTO comments (article_id, body, votes, author, created_at)
+                 VALUES %L RETURNING *;`,
+                formattedCommentValues
+            );
 
-            const commentQuery = format(`INSERT INTO comments (article_id, body, votes, author, created_at) VALUES %L RETURNING *;`, formattedCommentValues);
             return db.query(commentQuery);
         });
-};
 
+
+};
 
 
 const getAllUsers = () => {
