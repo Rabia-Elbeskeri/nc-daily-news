@@ -73,23 +73,20 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
             const articleQuery = format(`INSERT INTO articles (title, topic, author, body, created_at, votes, article_img_url) VALUES %L RETURNING *;`, formattedArticlesValues);
             return db.query(articleQuery);
         })
-               .then(({rows: insertedArticles}) => {
-            const articleTitleToIdMap = new Map();
-            insertedArticles.forEach(({title, article_id}) => {
-                articleTitleToIdMap.set(title, article_id);
+
+        .then(({ rows: insertedArticles }) => {
+            const articleTitleToIdMap = {};
+
+            insertedArticles.forEach(({ title, article_id }) => {
+                articleTitleToIdMap[title] = article_id;
             });
 
             const formattedCommentData = commentData.map(convertTimestampToDate);
             const formattedCommentValues = formattedCommentData
                 .map(({ article_title, body, votes, author, created_at }) => {
-                    const article_id = articleTitleToIdMap.get(article_title);
-                    return article_id ? [article_id, body, votes, author, created_at] : null;
-                })
-                .filter(Boolean);
-
-            if (formattedCommentValues.length === 0) {
-                return Promise.resolve();
-            }
+                    const article_id = articleTitleToIdMap[article_title];
+                    return [article_id, body, votes, author, created_at];
+                });
 
             const commentQuery = format(
                 `INSERT INTO comments (article_id, body, votes, author, created_at)
@@ -100,46 +97,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
             return db.query(commentQuery);
         });
 
-
 };
 
-
-const getAllUsers = () => {
-    return db.query("SELECT * FROM users;")
-        .then(result => result.rows)
-        .catch(err => console.error(err));
-};
-
-const getArticlesByTopic = (topic) => {
-    return db.query("SELECT * FROM articles WHERE topic = $1;", [topic])
-        .then(result => result.rows)
-        .catch(err => console.error(err));
-};
-
-const getCommentsWithNegativeVotes = () => {
-    return db.query("SELECT * FROM comments WHERE votes < 0;")
-        .then(result => result.rows)
-        .catch(err => console.error(err));
-};
-
-const getAllTopics = () => {
-    return db.query("SELECT * FROM topics;")
-        .then(result => result.rows)
-        .catch(err => console.error(err));
-};
-
-const getArticlesByUser = (username) => {
-    return db.query("SELECT * FROM articles WHERE author = $1;", [username])
-
-        .then(result => result.rows)
-        .catch(err => console.error(err));
-};
-
-
-const getPopularComments = () => {
-    return db.query("SELECT * FROM comments WHERE votes > 10;")
-        .then(result => result.rows)
-        .catch(err => console.error(err));
-};
 
 module.exports = seed;
