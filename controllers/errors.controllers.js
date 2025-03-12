@@ -1,26 +1,33 @@
-function handleNonExistantEndpoint(request, response, next) {
-    response.status(404).send({ msg: "Endpoint Not Found" });
-}
-
-function handlePSQLErrors(error, request, response, next) {
-    if (error.code === "22P02") {
-        response.status(400).send({ msg: "Invalid input" });
-    } else {
-        next(error);
+function handlePSQLErrors(err, req, res, next) {
+    if (err.code === "22P02") {
+        return res.status(400).send({ msg: "Invalid input" });
     }
-}
-
-function handleCustomErrors(error, request, response, next) {
-    if (error.status && error.msg) {
-        response.status(error.status).send({ msg: error.msg });
-    } else {
-        next(error);
+    if (err.code === "23503") {
+        // Handles foreign key constraint violations (missing article_id or author)
+        if (err.detail.includes("article_id")) {
+            return res.status(404).send({ msg: "Article not found" });
+        }
+        if (err.detail.includes("author")) {
+            return res.status(404).send({ msg: "User not found" });
+        }
     }
+    next(err);
 }
 
-function handleServerErrors(error, request, response, next) {
-    console.error(error);
-    response.status(500).send({ msg: "Internal Server Error" });
+function handleCustomErrors(err, req, res, next) {
+    if (err.status && err.msg) {
+        return res.status(err.status).send({ msg: err.msg });
+    }
+    next(err);
+}
+
+function handleServerErrors(err, req, res, next) {
+    console.error(err);
+    res.status(500).send({ msg: "Internal Server Error" });
+}
+
+function handleNonExistantEndpoint(req, res, next) {
+    res.status(404).send({ msg: "Endpoint Not Found" });
 }
 
 module.exports = {
@@ -29,5 +36,3 @@ module.exports = {
     handleCustomErrors,
     handleServerErrors,
 };
-
-
