@@ -304,6 +304,33 @@ describe("PATCH /api/articles/:article_id", () => {
 
 
 
+describe("DELETE /api/comments/:comment_id", () => {
+    test("204: deletes the specified comment", () => {
+        return request(app)
+            .delete("/api/comments/1")
+            .expect(204);
+    });
+
+    test("404: responds with an error when trying to delete a non-existent comment", () => {
+        return request(app)
+            .delete("/api/comments/9999")
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Comment not found");
+            });
+    });
+
+    test("400: responds with an error when comment_id is invalid", () => {
+        return request(app)
+            .delete("/api/comments/not-a-number")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Invalid input");
+            });
+    });
+});
+
+
 
 
 
