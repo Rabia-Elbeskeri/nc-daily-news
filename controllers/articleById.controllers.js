@@ -1,16 +1,17 @@
-const { fetchArticleById } = require("../models/articlesById.models");
+const { selectArticleById } = require("../models/articles.model");
 
-function getArticleById(request, response, next) {
+const getArticleById = (request, response, next) => {
     const { article_id } = request.params;
 
-    fetchArticleById(article_id)
+    if (isNaN(article_id)) {
+        return next({ status: 400, msg: "Invalid input" });
+    }
+
+    selectArticleById(article_id)
         .then((article) => {
             response.status(200).send({ article });
         })
-        .catch((error) => {
-            next(error);
-        });
+        .catch(next);
 };
-
 
 module.exports = getArticleById;

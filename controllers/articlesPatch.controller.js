@@ -1,16 +1,19 @@
-const { updateArticleVotes } = require("../models/articlesPatch.model");
+const { updateArticleVotes } = require("../models/articles.model");
 
-exports.patchArticleById = (req, res, next) => {
-    const { article_id } = req.params;
-    const { inc_votes } = req.body;
+const patchArticleById = (request, response, next) => {
+    const { article_id } = request.params;
+    const { inc_votes } = request.body;
 
-    if (typeof inc_votes !== "number") {
-        return next({ status: 400, msg: "Invalid input" });
+
+    if (inc_votes === undefined || typeof inc_votes !== "number") {
+        return response.status(400).send({ msg: "Invalid input" });
     }
 
     updateArticleVotes(article_id, inc_votes)
-        .then((updatedArticle) => {
-            res.status(200).send({ article: updatedArticle });
+        .then((article) => {
+            response.status(200).send({ article });
         })
         .catch(next);
 };
+
+module.exports = { patchArticleById };
