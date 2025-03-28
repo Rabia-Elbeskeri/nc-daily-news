@@ -2,13 +2,14 @@
 const app = require("./app");
 const { PORT = 8081 } = process.env;
 
-app.listen(PORT, (err) => {
+app.listen(PORT, "0.0.0.0", (err) => {
     if (err) {
         console.log("Error starting server:", err);
     } else {
         console.log(`Server is listening on ${PORT}`);
     }
 });
+
 
 
 
