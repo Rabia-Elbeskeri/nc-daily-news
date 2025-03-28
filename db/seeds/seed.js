@@ -2,7 +2,10 @@ const db = require("../connection");
 const format = require("pg-format");
 
 const { convertTimestampToDate } = require("./utils");
-const { articleData, commentData, topicData, userData } = require('../data/test-data/index');
+const { articleData, commentData, topicData, userData } = require('../data/test-data/index.js');
+console.log(articleData.length, commentData.length, topicData.length, userData.length);
+const data = require('../data/test-data');
+console.log("Loaded test-data keys:", Object.keys(data));
 
 const seed = ({ topicData, userData, articleData, commentData }) => {
     return db
