@@ -6,7 +6,8 @@
   "scripts": {
     "setup-dbs": "psql -f ./db/setup-dbs.sql",
     "seed-dev": "node ./db/seeds/run-seed.js",
-    "seed-prod": "NODE_ENV=production node ./db/seeds/run-seed.js","pretest": "NODE_ENV=test node ./db/seeds/run-seed.js",
+    "seed-prod": "NODE_ENV=production node ./db/seeds/run-seed.js",
+    "pretest": "NODE_ENV=test node ./db/seeds/run-seed.js",
     "test": "jest",
     "prepare": "husky install",
     "start": "node listen.js",
@@ -25,6 +26,7 @@
   },
   "homepage": "https://github.com/northcoders/be-nc-news#readme",
   "devDependencies": {
+    "dotenv-cli": "^8.0.0",
     "husky": "^8.0.2",
     "jest": "^27.5.1",
     "jest-extended": "^2.0.0",
