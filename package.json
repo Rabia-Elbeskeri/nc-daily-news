@@ -9,7 +9,6 @@
     "seed-prod": "NODE_ENV=production node ./db/seeds/run-seed.js",
     "pretest": "NODE_ENV=test node ./db/seeds/run-seed.js",
     "test": "jest",
-    "prepare": "husky install",
     "start": "node listen.js",
     "test-seed": "jest seed.test.js",
     "dev": "nodemon listen.js"
@@ -27,7 +26,6 @@
   "homepage": "https://github.com/northcoders/be-nc-news#readme",
   "devDependencies": {
     "dotenv-cli": "^8.0.0",
-    "husky": "^8.0.3",
     "jest": "^27.5.1",
     "jest-extended": "^2.0.0",
     "jest-sorted": "^1.0.15",
@@ -46,3 +44,4 @@
     ]
   }
 }
+
