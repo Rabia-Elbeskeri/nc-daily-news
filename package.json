@@ -7,7 +7,6 @@
     "setup-dbs": "psql -d postgres -f ./db/setup-dbs.sql",
     "seed-dev": "node ./db/seeds/run-seed.js",
     "test": "jest",
-    "prepare": "husky install",
     "start": "node listen.js",
     "dev": "nodemon listen.js",
     "pretest": "NODE_ENV=test node ./db/seeds/run-seed.js",
