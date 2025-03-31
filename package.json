@@ -9,11 +9,10 @@
     "test": "jest",
     "prepare": "husky install",
     "start": "node listen.js",
-    "test-seed": "jest seed.test.js",
-
-    "seed-prod": "NODE_ENV=production node ./db/seeds/run-seed.js",
+    "dev": "nodemon listen.js",
     "pretest": "NODE_ENV=test node ./db/seeds/run-seed.js",
-    "dev": "nodemon listen.js"
+    "seed-prod": "NODE_ENV=production node ./db/seeds/run-seed.js",
+    "test-seed": "jest seed.test.js"
   },
   "repository": {
     "type": "git",
@@ -28,18 +27,17 @@
   "homepage": "https://github.com/northcoders/be-nc-news#readme",
   "devDependencies": {
     "dotenv-cli": "^8.0.0",
+    "husky": "^9.1.7",
     "jest": "^27.5.1",
     "jest-extended": "^2.0.0",
-
     "jest-sorted": "^1.0.15",
     "nodemon": "^3.1.9",
     "supertest": "^7.1.0"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
-    "pg": "^8.14.1",
-
     "express": "^4.21.2",
+    "pg": "^8.14.1",
     "pg-format": "^1.0.4"
   },
   "jest": {
