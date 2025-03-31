@@ -1,5 +1,6 @@
 \c nc_news
 
+
 \echo "Topics Table"
 SELECT * FROM topics;
 
@@ -11,10 +12,6 @@ SELECT * FROM articles;
 
 \echo "Comments Table"
 SELECT * FROM comments;
-
-
-
-
 
 
 

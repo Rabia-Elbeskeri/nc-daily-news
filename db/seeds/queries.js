@@ -48,10 +48,16 @@ const getCommentsWithHighVotes = () => {
         });
 };
 
-// Run all queries
-getAllUsers();
-getArticlesByTopic('coding');
-getCommentsWithNegativeVotes();
-getAllTopics();
-getArticlesByUser('grumpy19');
-getCommentsWithHighVotes();
+// 👇 Run them in sequence
+const runAllQueries = async () => {
+    await getAllUsers();
+    await getArticlesByTopic("coding");
+    await getCommentsWithNegativeVotes();
+    await getAllTopics();
+    await getArticlesByUser("grumpy19");
+    await getCommentsWithHighVotes();
+
+    db.end(); // Close the DB connection
+};
+
+runAllQueries();

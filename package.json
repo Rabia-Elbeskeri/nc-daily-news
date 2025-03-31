@@ -4,13 +4,15 @@
   "description": "bc-nc-news",
   "main": "listen.js",
   "scripts": {
-    "setup-dbs": "psql -f ./db/setup-dbs.sql",
+    "setup-dbs": "psql -d postgres -f ./db/setup-dbs.sql",
     "seed-dev": "node ./db/seeds/run-seed.js",
-    "seed-prod": "NODE_ENV=production node ./db/seeds/run-seed.js",
-    "pretest": "NODE_ENV=test node ./db/seeds/run-seed.js",
     "test": "jest",
+    "prepare": "husky install",
     "start": "node listen.js",
     "test-seed": "jest seed.test.js",
+
+    "seed-prod": "NODE_ENV=production node ./db/seeds/run-seed.js",
+    "pretest": "NODE_ENV=test node ./db/seeds/run-seed.js",
     "dev": "nodemon listen.js"
   },
   "repository": {
@@ -28,14 +30,16 @@
     "dotenv-cli": "^8.0.0",
     "jest": "^27.5.1",
     "jest-extended": "^2.0.0",
+
     "jest-sorted": "^1.0.15",
     "nodemon": "^3.1.9",
     "supertest": "^7.1.0"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
+    "pg": "^8.14.1",
+
     "express": "^4.21.2",
-    "pg": "^8.13.3",
     "pg-format": "^1.0.4"
   },
   "jest": {
@@ -44,4 +48,3 @@
     ]
   }
 }
-
