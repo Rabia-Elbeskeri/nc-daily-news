@@ -1,5 +1,9 @@
+const cors = require('cors');
 const express = require("express");
 const app = express();
+app.use(cors());
+
+
 
 const getEndpoints = require("./controllers/api.controller");
 const getTopics = require("./controllers/topics.controller");
@@ -61,6 +65,9 @@ app.all("*", handleNonExistentEndpoint);
 app.use(handlePSQLErrors);
 app.use(handleCustomErrors);
 app.use(handleServerErrors);
+
+
+
 
 module.exports = app;
 
